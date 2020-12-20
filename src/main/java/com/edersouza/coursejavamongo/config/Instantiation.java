@@ -3,6 +3,7 @@ package com.edersouza.coursejavamongo.config;
 import com.edersouza.coursejavamongo.domain.Post;
 import com.edersouza.coursejavamongo.domain.User;
 import com.edersouza.coursejavamongo.dto.AuthorDTO;
+import com.edersouza.coursejavamongo.dto.CommentsDTO;
 import com.edersouza.coursejavamongo.repository.PostRepository;
 import com.edersouza.coursejavamongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,20 @@ public class Instantiation implements CommandLineRunner {
         postRepository.saveAll(Arrays.asList(post1, post2));
 
         maria.getPosts().addAll(Arrays.asList(post1, post2));
+
         userRepository.save(maria);
+
+        CommentsDTO comments1 = new CommentsDTO("Boa viagem mano!",
+                sdf.parse("21/03/2019"), new AuthorDTO(alex));
+        CommentsDTO comments2 = new CommentsDTO("Aproveite",
+                sdf.parse("22/03/2019"), new AuthorDTO(bob));
+        CommentsDTO comments3 = new CommentsDTO("Tenha um ótimo dia!",
+                sdf.parse("24/03/2019"), new AuthorDTO(alex));
+
+        post1.getComments().addAll(Arrays.asList(comments1, comments2));
+        post2.getComments().addAll(Arrays.asList(comments3));
+
+        postRepository.saveAll(Arrays.asList(post1, post2));
 
     }
 }
