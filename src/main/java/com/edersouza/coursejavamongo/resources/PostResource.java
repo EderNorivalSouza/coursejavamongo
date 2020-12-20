@@ -6,6 +6,7 @@ import com.edersouza.coursejavamongo.services.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -29,6 +30,19 @@ public class PostResource {
             defaultValue = "") String text) {
         text = URL.decodeParam(text);
         List<Post> post = postService.findByTitle(text);
+        return ResponseEntity.ok().body(post);
+    }
+
+    @GetMapping(value = "/fullsearch")
+    public ResponseEntity<List<Post>> fullSearch(
+            @RequestParam(value = "text", defaultValue = "") String text,
+            @RequestParam(value = "minDate", defaultValue = "") String min,
+            @RequestParam(value = "maxDate", defaultValue = "") String max) {
+        text = URL.decodeParam(text);
+        Date dateMin = URL.convertDate(min, new Date(0L));
+        Date dateMax = URL.convertDate(max, new Date());
+
+        List<Post> post = postService.fullSearch(text, dateMin, dateMax);
         return ResponseEntity.ok().body(post);
     }
 }
