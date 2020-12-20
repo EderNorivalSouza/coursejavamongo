@@ -1,5 +1,6 @@
 package com.edersouza.coursejavamongo.resources;
 
+import com.edersouza.coursejavamongo.domain.Post;
 import com.edersouza.coursejavamongo.domain.User;
 import com.edersouza.coursejavamongo.dto.UserDTO;
 import com.edersouza.coursejavamongo.services.UserService;
@@ -59,5 +60,11 @@ public class UserResource {
         user.setId(id);
         userService.update(user);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/{id}/posts")
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+        User user = userService.findById(id);
+        return ResponseEntity.ok().body(user.getPosts());
     }
 }
