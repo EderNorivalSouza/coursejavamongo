@@ -2,10 +2,12 @@ package com.edersouza.coursejavamongo.services;
 
 import com.edersouza.coursejavamongo.domain.UserEntity;
 import com.edersouza.coursejavamongo.repository.UserRepository;
+import com.edersouza.coursejavamongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -17,8 +19,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<UserEntity> findAll(){
+    public List<UserEntity> findAll() {
         return userRepository.findAll();
+    }
+
+    public UserEntity findById(String id) {
+        Optional<UserEntity> userEntity = userRepository.findById(id);
+        return userEntity.orElseThrow(
+                () -> new ObjectNotFoundException("Object not found"));
     }
 
 }
