@@ -1,6 +1,7 @@
 package com.edersouza.coursejavamongo.services;
 
 import com.edersouza.coursejavamongo.domain.UserEntity;
+import com.edersouza.coursejavamongo.dto.UserDTO;
 import com.edersouza.coursejavamongo.repository.UserRepository;
 import com.edersouza.coursejavamongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +30,11 @@ public class UserService {
                 () -> new ObjectNotFoundException("Object not found"));
     }
 
+    public UserEntity insert(UserEntity user) {
+        return userRepository.insert(user);
+    }
+
+    public UserEntity fromDTO(UserDTO userDTO) {
+        return new UserEntity(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
+    }
 }
