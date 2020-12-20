@@ -1,6 +1,6 @@
 package com.edersouza.coursejavamongo.resources;
 
-import com.edersouza.coursejavamongo.domain.UserEntity;
+import com.edersouza.coursejavamongo.domain.User;
 import com.edersouza.coursejavamongo.dto.UserDTO;
 import com.edersouza.coursejavamongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class UserResource {
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
-        List<UserEntity> list = userService.findAll();
+        List<User> list = userService.findAll();
 //       "map(item->new UserDTO(item))" its the same as "map(UserDTO::new)"
         List<UserDTO> dtoList = list.stream().map(UserDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok().body(dtoList);
@@ -33,14 +33,14 @@ public class UserResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable String id) {
-        UserEntity userEntity = userService.findById(id);
-        return ResponseEntity.ok().body(new UserDTO(userEntity));
+        User user = userService.findById(id);
+        return ResponseEntity.ok().body(new UserDTO(user));
     }
 
     @PostMapping
     public ResponseEntity<Void> insert(@RequestBody UserDTO userDTO) {
-        UserEntity userEntity = userService.fromDTO(userDTO);
-        UserEntity user = userService.insert(userEntity);
+        User userEntity = userService.fromDTO(userDTO);
+        User user = userService.insert(userEntity);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
@@ -55,9 +55,9 @@ public class UserResource {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Void> update(@PathVariable String id,
                                        @RequestBody UserDTO userDTO) {
-        UserEntity userEntity = userService.fromDTO(userDTO);
-        userEntity.setId(id);
-        userService.update(userEntity);
+        User user = userService.fromDTO(userDTO);
+        user.setId(id);
+        userService.update(user);
         return ResponseEntity.noContent().build();
     }
 }

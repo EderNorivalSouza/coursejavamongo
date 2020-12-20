@@ -1,6 +1,6 @@
 package com.edersouza.coursejavamongo.services;
 
-import com.edersouza.coursejavamongo.domain.UserEntity;
+import com.edersouza.coursejavamongo.domain.User;
 import com.edersouza.coursejavamongo.dto.UserDTO;
 import com.edersouza.coursejavamongo.repository.UserRepository;
 import com.edersouza.coursejavamongo.services.exception.ObjectNotFoundException;
@@ -20,17 +20,17 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<UserEntity> findAll() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public UserEntity findById(String id) {
-        Optional<UserEntity> userEntity = userRepository.findById(id);
+    public User findById(String id) {
+        Optional<User> userEntity = userRepository.findById(id);
         return userEntity.orElseThrow(
                 () -> new ObjectNotFoundException("Object not found"));
     }
 
-    public UserEntity insert(UserEntity user) {
+    public User insert(User user) {
         return userRepository.insert(user);
     }
 
@@ -39,18 +39,18 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public UserEntity update(UserEntity userEntity) {
-        UserEntity newUser = userRepository.findById(userEntity.getId()).get();
-        updateData(newUser, userEntity);
+    public User update(User user) {
+        User newUser = userRepository.findById(user.getId()).get();
+        updateData(newUser, user);
         return userRepository.save(newUser);
     }
 
-    private void updateData(UserEntity newUser, UserEntity userEntity) {
-        newUser.setName(userEntity.getName());
-        newUser.setEmail(userEntity.getEmail());
+    private void updateData(User newUser, User user) {
+        newUser.setName(user.getName());
+        newUser.setEmail(user.getEmail());
     }
 
-    public UserEntity fromDTO(UserDTO userDTO) {
-        return new UserEntity(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
+    public User fromDTO(UserDTO userDTO) {
+        return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
     }
 }

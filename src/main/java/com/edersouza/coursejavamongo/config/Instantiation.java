@@ -1,30 +1,51 @@
 package com.edersouza.coursejavamongo.config;
 
-import com.edersouza.coursejavamongo.domain.UserEntity;
+import com.edersouza.coursejavamongo.domain.Post;
+import com.edersouza.coursejavamongo.domain.User;
+import com.edersouza.coursejavamongo.repository.PostRepository;
 import com.edersouza.coursejavamongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.TimeZone;
 
 @Configuration
 public class Instantiation implements CommandLineRunner {
 
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
     @Autowired
-    public Instantiation(UserRepository userRepository) {
+    public Instantiation(UserRepository userRepository,
+                         PostRepository postRepository) {
         this.userRepository = userRepository;
+        this.postRepository = postRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        postRepository.deleteAll();
         userRepository.deleteAll();
-        UserEntity maria = new UserEntity(null, "Maria Brown", "maria@gmail.com");
-        UserEntity alex = new UserEntity(null, "Alex Green", "alex@gmail.com");
-        UserEntity bob = new UserEntity(null, "Bob Grey", "bob@gmail.com");
+
+        User maria = new User(null, "Maria Brown", "maria@gmail.com");
+        User alex = new User(null, "Alex Green", "alex@gmail.com");
+        User bob = new User(null, "Bob Grey", "bob@gmail.com");
+
         userRepository.saveAll(Arrays.asList(maria, alex, bob));
+
+        Post post1 = new Post(null, sdf.parse("21/03/2019"), "Partiu Viagem",
+                "Vou viajar para São Paulo. Abraços!", maria);
+        Post post2 = new Post(null, sdf.parse("23/03/2019"), "Bom dia",
+                "Acordei feliz hoje!", maria);
+        postRepository.saveAll(Arrays.asList(post1,post2));
 
     }
 }
+//

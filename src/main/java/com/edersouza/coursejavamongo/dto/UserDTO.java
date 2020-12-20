@@ -1,6 +1,6 @@
 package com.edersouza.coursejavamongo.dto;
 
-import com.edersouza.coursejavamongo.domain.UserEntity;
+import com.edersouza.coursejavamongo.domain.User;
 
 import java.io.Serializable;
 
@@ -13,10 +13,10 @@ public class UserDTO implements Serializable {
     public UserDTO() {
     }
 
-    public UserDTO(UserEntity userEntity) {
-        this.id = userEntity.getId();
-        this.name = userEntity.getName();
-        this.email = userEntity.getEmail();
+    public UserDTO(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
     }
 
     public String getId() {
